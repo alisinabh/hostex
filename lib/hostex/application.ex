@@ -6,9 +6,13 @@ defmodule Hostex.Application do
   use Application
 
   def start(_type, _args) do
+    Hostex.ensure_storage_dir_exists()
+    Hostex.initialize_token()
+
     children = [
       # Starts a worker by calling: Hostex.Worker.start_link(arg)
       # {Hostex.Worker, arg}
+      {Plug.Cowboy, scheme: :http, plug: Hostex.Router, options: [port: 4001]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
