@@ -30,7 +30,10 @@ defmodule Hostex.UploadPlug do
 
         save_path = Path.join(save_dir, filename)
 
-        :ok = File.rename(file.path, save_path)
+        case File.rename(file.path, save_path) do
+          :ok -> :ok
+          {:error, :exdev} -> File.cp(file.path, save_path)
+        end
 
         resp =
           Jason.encode!(%{url: Path.join(original_dir, filename), mime: MIME.from_path(filename)})
