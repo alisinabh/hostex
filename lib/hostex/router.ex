@@ -33,6 +33,10 @@ defmodule Hostex.Router do
 
   plug(:dispatch)
 
+  get "/healthz" do
+    send_resp(conn, 200, "OK")
+  end
+
   # Upload routes
   post("/:name", to: UploadPlug)
   post("/", to: UploadPlug)

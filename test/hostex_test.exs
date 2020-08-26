@@ -8,6 +8,11 @@ defmodule HostexTest do
   @base_url "http://localhost:4001/"
   @test_file Path.join(to_string(:code.priv_dir(:hostex)), "test.txt")
 
+  test "GET /healthz works" do
+    {:ok, %{status_code: 200, body: body}} = HTTPoison.get(Path.join(@base_url, "/healthz"))
+    assert body == "OK"
+  end
+
   test "Uploding without a token fails" do
     conn =
       conn(:post, "/file.txt")
