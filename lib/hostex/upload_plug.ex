@@ -7,6 +7,8 @@ defmodule Hostex.UploadPlug do
 
   import Plug.Conn
 
+  require Logger
+
   alias Hostex.AuthPlug
 
   @uploads_dir "uploads"
@@ -29,6 +31,8 @@ defmodule Hostex.UploadPlug do
         File.mkdir_p(save_dir)
 
         save_path = Path.join(save_dir, filename)
+
+        Logger.debug(fn -> "Saving to #{save_path}" end)
 
         case File.rename(file.path, save_path) do
           :ok -> :ok

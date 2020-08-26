@@ -30,14 +30,6 @@ defmodule Hostex.ServePlug do
   end
 
   def init(opts) do
-    from =
-      case Keyword.get(opts, :from, Hostex.storage_dir()) do
-        {_, _} = from -> from
-        from when is_atom(from) -> {from, "priv/static"}
-        from when is_binary(from) -> from
-        _ -> raise ArgumentError, ":from must be an atom, a binary or a tuple"
-      end
-
     %{
       gzip?: Keyword.get(opts, :gzip, false),
       brotli?: Keyword.get(opts, :brotli, false),
@@ -47,16 +39,16 @@ defmodule Hostex.ServePlug do
       et_generation: Keyword.get(opts, :etag_generation, nil),
       headers: Keyword.get(opts, :headers, %{}),
       content_types: Keyword.get(opts, :content_types, %{}),
-      from: from,
       at: opts |> Keyword.get(:at, "/") |> Plug.Router.Utils.split()
     }
   end
 
   def call(
         conn = %Conn{method: meth},
-        %{at: at, only_rules: only_rules, from: from, gzip?: gzip?, brotli?: brotli?} = options
+        %{at: at, only_rules: only_rules, gzip?: gzip?, brotli?: brotli?} = options
       )
       when meth in @allowed_methods do
+    from = Hostex.storage_dir()
     segments = subset(at, conn.path_info)
 
     if allowed?(only_rules, segments) do
@@ -68,7 +60,7 @@ defmodule Hostex.ServePlug do
 
       path = path(from, segments)
       range = get_req_header(conn, "range")
-      Logger.debug(fn -> "Looking for #{path} #{segments}" end)
+      Logger.debug(fn -> "Looking for #{path}" end)
       encoding = file_encoding(conn, path, range, gzip?, brotli?)
       serve_static(encoding, conn, segments, range, options)
     else
