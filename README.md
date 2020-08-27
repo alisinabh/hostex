@@ -11,9 +11,9 @@ Simply run a Hostex service with the following command.
 ```
 docker run -d \
            -p4001:4001 \
-		   -v /local/storage/path:/var/hostex \
-		   -e HOSTEX_UPLOAD_TOKEN=asecrettokenhere \
-		   alisinabh/hostex
+	   -v /local/storage/path:/var/hostex \
+	   -e HOSTEX_UPLOAD_TOKEN=asecrettokenhere \
+	   alisinabh/hostex
 ```
 
 Please change `/local/storage/path` to a path on your system for the files to get stored. And choose a random string (You can probably just bang on your keyboard a few times) for `HOSTEX_UPLOAD_TOKEN`. This is later used when you try to upload files from your backend.
@@ -59,5 +59,5 @@ Just send a HTTP POST multipart request with your file and Authorization header.
   + Response 200 (FILE_MIME)
 
 
-	
+
 
