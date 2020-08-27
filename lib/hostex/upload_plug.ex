@@ -28,7 +28,7 @@ defmodule Hostex.UploadPlug do
         filename = conn.params["name"] || file.filename
 
         # Create save directory
-        File.mkdir_p(save_dir)
+        File.mkdir_p!(save_dir)
 
         save_path = Path.join(save_dir, filename)
 
