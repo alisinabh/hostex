@@ -30,7 +30,7 @@ ENV PLUG_TMPDIR=/var/hostex/tmp
 RUN mkdir /hostex & mkdir -p /var/hostex/data && mkdir -p /var/hostex/tmp
 COPY --from=build /hostex/release /hostex
 WORKDIR /hostex
-RUN chown -R app: /hostex && chown -R app: /var/hostex
-USER app
+# RUN chown -R app: /hostex && chown -R app: /var/hostex
+# USER app
 
 CMD ["/hostex/bin/hostex", "start"]
