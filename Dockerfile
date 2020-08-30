@@ -22,7 +22,7 @@ ENV LANG=C.UTF-8
 RUN apk update && apk add openssl ncurses-libs
 
 # Copy over the build artifact from the previous step and create a non root user
-RUN adduser -h /hostex -D app
+# RUN adduser -h /hostex -D app
 
 ENV HOSTEX_STORAGE_PATH=/var/hostex/data
 ENV PLUG_TMPDIR=/var/hostex/tmp
